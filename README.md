@@ -3,7 +3,7 @@
 ## Arquitetura do Projeto
 
 ```
-tc_deep_learning_ia/
+tc_datathon/
 ├── app/
 │   ├── __init__.py
 │   ├── routes.py

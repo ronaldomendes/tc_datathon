@@ -1,0 +1,35 @@
+site_name: Tech Challenge 05 - Datathon
+plugins:
+  - search
+
+nav:
+  - Início: index.md
+  - Sobre: about.md
+
+markdown_extensions:
+  - pymdownx.tasklist
+  - pymdownx.emoji
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+theme:
+  language: pt
+  name: material
+  font:
+    text: Roboto
+    code: Red Hat Mono
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Light mode
+      primary: indigo
+      accent: pink
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Dark mode
+      primary: teal
+      accent: amber

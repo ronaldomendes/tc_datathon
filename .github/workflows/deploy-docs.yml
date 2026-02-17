@@ -1,4 +1,4 @@
-name: Deploy MkDocs
+name: Deploy MkDocs Documentation
 
 on:
   push:
@@ -26,6 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r mkdocs-requirements.txt
 
+      - name: Configure Git
+        run: | 
+          git config --global user.name "github-actions[bot]" 
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Deploy to GitHub Pages
         run: |
           mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,6 +4,11 @@ plugins:
 
 nav:
   - Início: index.md
+  - Visão geral: overview.md
+  - Estrutura do projeto: structure.md
+  - Execução e deploy: running.md
+  - API: api.md
+  - ML Pipeline: pipeline.md
   - Sobre: about.md
 
 markdown_extensions:

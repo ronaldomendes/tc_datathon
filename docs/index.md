@@ -1,3 +1,11 @@
+# Datathon Passos Mágicos
+
+## Como executar o projeto
+- Para executar o MLFlow: ``mlflow ui``
+- Para executar o Front-end: ``uvicorn app.main:app --reload``
+
+---
+
 ## Arquitetura do Projeto
 
 ```

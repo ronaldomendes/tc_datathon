@@ -33,3 +33,7 @@ theme:
         name: Dark mode
       primary: teal
       accent: amber
+extra:
+  social:
+    - icon: material/github
+      link: https://github.com/ronaldomendes/tc_datathon

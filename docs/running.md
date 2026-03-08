@@ -40,8 +40,6 @@ O serviço sobe na porta **8000**, com volume somente leitura `./mlartifacts:/ap
 pip install -r requirements.txt
 ```
 
-No Docker, o `Dockerfile` ignora `pywin32` do `requirements.txt` para compatibilidade Linux.
-
 ## Comandos principais
 
 | Ação            | Comando |

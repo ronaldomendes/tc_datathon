@@ -7,8 +7,7 @@ from pathlib import Path
 from typing import List, Optional
 
 # Configurações do dataset PEDE 2024 (conforme notebook)
-SHEET_NAME = "PEDE2024"
-COLUNAS_INTERESSE = ["ipv", "ips", "iaa", "ieg", "nº_av", "ida", "Defasagem"]
+COLS_TARGET = ["ipv", "ips", "iaa", "ieg", "nº_av", "ida", "Defasagem"]
 EXCEL_FILENAME = "BASE DE DADOS PEDE 2024 - DATATHON.xlsx"
 DATA_DIR = "files"
 

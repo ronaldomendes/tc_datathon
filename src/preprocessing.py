@@ -8,29 +8,22 @@ from typing import List, Optional
 
 import pandas as pd
 
-from src.utils import (
-    COLUNAS_INTERESSE,
-    SHEET_NAME,
-    encontrar_coluna,
-    get_data_path,
-)
+from src.utils import COLS_TARGET, encontrar_coluna, get_data_path
 
 logger = logging.getLogger(__name__)
 
 
-def carregar_excel(
-        path_excel: Optional[Path] = None,
-        sheet_name: Optional[str] = None,
-) -> pd.DataFrame:
+def carregar_excel(path_excel: Optional[Path] = None) -> pd.DataFrame:
     """
     Carrega o Excel PEDE 2024 na aba indicada.
     Se path_excel não for passado, usa get_data_path().
     """
     path = path_excel or get_data_path()
-    sheet = sheet_name or SHEET_NAME
+
     if not path.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {path}")
-    df = pd.read_excel(path, sheet_name=sheet)
+    sheets = pd.read_excel(path, sheet_name=None)
+    df = pd.concat(sheets.values(), ignore_index=True)
     logger.info("Dimensões do dataset carregado: %s linhas, %s colunas", df.shape[0], df.shape[1])
     return df
 
@@ -43,7 +36,7 @@ def selecionar_colunas_interesse(
     Seleciona apenas as colunas de interesse que existem no arquivo.
     Regra: para cada nome em colunas, usa encontrar_coluna(); colunas não encontradas são ignoradas com aviso.
     """
-    colunas = colunas or COLUNAS_INTERESSE
+    colunas = colunas or COLS_TARGET
     colunas_ok = []
     for c in colunas:
         encontrada = encontrar_coluna(c, list(df.columns))
@@ -56,14 +49,11 @@ def selecionar_colunas_interesse(
     return out
 
 
-def preparar_dados(
-        path_excel: Optional[Path] = None,
-        sheet_name: Optional[str] = None,
-        colunas: Optional[List[str]] = None,
-) -> pd.DataFrame:
+def preparar_dados(path_excel: Optional[Path] = None,
+                   colunas: Optional[List[str]] = None) -> pd.DataFrame:
     """
     Pipeline: carrega o Excel e retorna apenas as colunas de interesse (existentes).
     """
-    df = carregar_excel(path_excel=path_excel, sheet_name=sheet_name)
+    df = carregar_excel(path_excel=path_excel)
     df['Defasagem'] = df['Defasagem'].apply(lambda x: 1 if x < 0 else 0)
     return selecionar_colunas_interesse(df, colunas=colunas)

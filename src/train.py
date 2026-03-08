@@ -8,13 +8,14 @@ import time
 from pathlib import Path
 from typing import Any, List, Optional
 
+import matplotlib.pyplot as plt
 import mlflow
 import mlflow.xgboost
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+from sklearn.metrics import *
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, precision_score, recall_score, f1_score, roc_auc_score
 
 from src.evaluate import compute_metrics
 from src.feature_engineering import criar_atributos_derivados
@@ -144,19 +145,31 @@ def train(
         mlflow.log_param("feature_names", str(feature_names))
         mlflow.log_metric("train_time", train_time)
         mlflow.log_metrics(metrics)
+
         mlflow.xgboost.log_model(model, artifact_path="model")
-        run_id = mlflow.active_run().info.run_id
 
         precision = precision_score(y_val, y_pred, pos_label=1)
         recall = recall_score(y_val, y_pred, pos_label=1)
         f1 = f1_score(y_val, y_pred, pos_label=1)
-        auc = roc_auc_score(y_val, y_score)
+        roc_auc = roc_auc_score(y_val, y_score)
 
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
         mlflow.log_metric("f1", f1)
-        mlflow.log_metric("roc_auc", auc)
+        mlflow.log_metric("roc_auc", roc_auc)
 
+        # gráficos
+        # matriz de confusão
+        ConfusionMatrixDisplay.from_estimator(model, X_val, y_val)
+        mlflow.log_figure(plt.gcf(), 'rf_confusion_matrix.png')
+        plt.close()
+
+        # roc
+        RocCurveDisplay.from_estimator(model, X_val, y_val)
+        mlflow.log_figure(plt.gcf(), 'rf_roc_curve.png')
+        plt.close()
+
+        run_id = mlflow.active_run().info.run_id
         logger.info("MLflow run_id: %s", run_id)
         print(classification_report(y_val, y_pred, digits=3))
 
